@@ -7,8 +7,8 @@ import pessoasModel from '../../infrastructure/persistence/mysql/models/pessoas.
 import pessoasFisicasModel from '../../infrastructure/persistence/mysql/models/pessoasfisicas.models.mysql.database';
 import pessoasJuridicasModel from '../../infrastructure/persistence/mysql/models/pessoasjuridicas.models.mysql.database';
 import enderecosModel from '../../infrastructure/persistence/mysql/models/enderecos.models.mysql.database';
-import modelsToEntities from '../../infrastructure/persistence/mysql/modelsToEntities.mysql.database';
-import entitiesToModels from '../../infrastructure/persistence/mysql/entitiesToModels.mysql.database';
+import modelsToEntities from '../../infrastructure/persistence/mysql/helpers/modelsToEntities.mysql.database';
+import entitiesToModels from '../../infrastructure/persistence/mysql/helpers/entitiesToModels.mysql.database';
 
 export class ClientsRepository implements IClientsRepository {
     constructor(

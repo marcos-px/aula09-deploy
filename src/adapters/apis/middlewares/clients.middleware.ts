@@ -5,13 +5,19 @@ import debug from 'debug';
 import multer from 'multer';
 import path from 'path';
 import xlsxFilesInterface from '../../../infrastructure/files/xlsx.files';
+import logger from '../../../infrastructure/logs/winston.logs';
+import cpfvalidationHelpersAdapters from '../../helpers/cpfvalidation.helpers.adapters';
 
 const log: debug.IDebugger = debug('app:clients-middleware');
 
 class ClientsMiddleware {
     async validateRequiredClientBodyFields(req: express.Request, res: express.Response, next: express.NextFunction){
         if (req.body && (req.body.cpf || req.body.cnpj)) {
-            next();
+            if(req.body.cpf && !cpfvalidationHelpersAdapters(req.body.cpf)){
+                res.status(400).send({error: `Você deve enviar um cpf válido.`});
+            } else {
+                next();
+            }
         } else {
             res.status(400).send({error: `Você deve enviar o campo cpf ou cnpj.`});
         }
@@ -22,8 +28,10 @@ class ClientsMiddleware {
             clientId: Number(req.params.clientId)
         });
         if (client) {
+            logger.info(['Cliente encontrado: ', client]);
             next();
         } else {
+            logger.error(`Usuário ${req.params.clientId} não existe`);
             res.status(404).send({error: `Usuário ${req.params.clientId} não existe`});
         }
     }

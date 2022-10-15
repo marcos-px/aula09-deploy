@@ -1,0 +1,3 @@
+{"level":"error","message":"Usuário 1 não existe","timestamp":"2022-10-15T14:18:30.953Z"}
+{"level":"info","message":["Cliente encontrado: ",{"cep":"35530000","cpf":"12345678900","endereco":{"bairro":"","cep":"35530-000","cidade":"Cláudio","estado":"MG","logradouro":""},"indexId":2,"limiteCredito":1000,"nome":"Erik Borges","observacoes":"Bom pagador"}],"timestamp":"2022-10-15T14:18:53.043Z"}
+{"level":"info","message":["Cliente encontrado: ",{"cep":"35530000","cpf":"12345678900","endereco":{"bairro":"","cep":"35530-000","cidade":"Cláudio","estado":"MG","logradouro":""},"indexId":2,"limiteCredito":1000,"nome":"Erik Borges","observacoes":"Bom pagador"}],"timestamp":"2022-10-15T14:46:26.941Z"}
