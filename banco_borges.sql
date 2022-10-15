@@ -33,7 +33,7 @@ CREATE TABLE `pessoas` (
   `limiteCredito` int NOT NULL DEFAULT '0',
   `dataCadastro` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `dataAtualizacao` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `observacoes` text NOT NULL,
+  `observacoes` text CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci,
   PRIMARY KEY (`idpessoa`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -62,4 +62,4 @@ CREATE TABLE `pessoas_juridicas` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
--- 2022-10-14 23:19:44
+-- 2022-10-15 01:40:22
