@@ -17,6 +17,13 @@ export class ClientsRoutes extends CommonRoutesConfig {
                 ClientsController.createClient
             );
 
+            this.app.route(`/clients/bulk`)
+                    .post(
+                        ClientsMiddleware.uploadFile().single('file'),
+                        ClientsMiddleware.parseXlsx,
+                        ClientsController.createClientBulk
+                    )
+
             this.app.route(`/clients/:clientId`)
                         .all(ClientsMiddleware.validateClientExists)
                         .get(ClientsController.getClientById)

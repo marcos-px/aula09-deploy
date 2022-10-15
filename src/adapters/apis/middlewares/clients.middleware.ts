@@ -2,6 +2,9 @@ import express from 'express';
 // import clientsService from '../../common/services/clients.service';
 import readClientUsecase from '../../../domain/usecases/clients/read.client.usecase';
 import debug from 'debug';
+import multer from 'multer';
+import path from 'path';
+import xlsxFilesInterface from '../../../infrastructure/files/xlsx.files';
 
 const log: debug.IDebugger = debug('app:clients-middleware');
 
@@ -35,6 +38,24 @@ class ClientsMiddleware {
         } else {
             res.status(409).send({error: `Usuário ${resourceID} já existe existe`});
         }
+    }
+
+    uploadFile(){
+        return multer({
+            storage: multer.diskStorage({
+                destination: (req, file, cb) => {
+                    cb(null, path.resolve("uploads"));
+                },
+                filename: (req, file, cb) => {
+                    cb(null, `${Date.now()}-${file.originalname.toLocaleLowerCase()}`)
+                },
+            }),
+        });
+    }
+
+    async parseXlsx(req: express.Request, res: express.Response, next: express.NextFunction){
+        req.body.fileData = xlsxFilesInterface.parse(req.file!.path);
+        next();
     }
 }
 

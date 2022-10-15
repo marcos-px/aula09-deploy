@@ -17,6 +17,7 @@ const routes: CommonRoutesConfig[] = [];
 const debugLog: debug.IDebugger = debug('app');
 
 app.use(express.json());
+app.use(express.urlencoded());
 app.use(cors());
 
 const loggerOptions: expressWinston.LoggerOptions = {

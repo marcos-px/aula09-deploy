@@ -38,6 +38,16 @@ class ClientsController {
         });
         res.status(204).send();
     }
+
+    async createClientBulk(req: express.Request, res: express.Response) {
+        let countUsers = 0;
+        for(countUsers = 0; countUsers < req.body.fileData.length; countUsers++){
+            await createClientUsecase.execute(req.body.fileData[countUsers]);
+        }
+        res.status(201).send({
+            createdUsers: countUsers
+        });
+    }
 }
 
 export default new ClientsController();
