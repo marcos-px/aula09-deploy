@@ -7,6 +7,7 @@ import path from 'path';
 import xlsxFilesInterface from '../../../infrastructure/files/xlsx.files';
 import logger from '../../../infrastructure/logs/winston.logs';
 import cpfvalidationHelpersAdapters from '../../helpers/cpfvalidation.helpers.adapters';
+import constantsConfig from '../../../infrastructure/config/constants.config';
 
 const log: debug.IDebugger = debug('app:clients-middleware');
 
@@ -14,12 +15,12 @@ class ClientsMiddleware {
     async validateRequiredClientBodyFields(req: express.Request, res: express.Response, next: express.NextFunction){
         if (req.body && (req.body.cpf || req.body.cnpj)) {
             if(req.body.cpf && !cpfvalidationHelpersAdapters(req.body.cpf)){
-                res.status(400).send({error: `Você deve enviar um cpf válido.`});
+                res.status(400).send({error: constantsConfig.CLIENTS.MESSAGES.ERROR.INVALID_CPF});
             } else {
                 next();
             }
         } else {
-            res.status(400).send({error: `Você deve enviar o campo cpf ou cnpj.`});
+            res.status(400).send({error: constantsConfig.CLIENTS.MESSAGES.ERROR.VOID_CPF_CNPJ});
         }
     }
 
@@ -32,7 +33,7 @@ class ClientsMiddleware {
             next();
         } else {
             logger.error(`Usuário ${req.params.clientId} não existe`);
-            res.status(404).send({error: `Usuário ${req.params.clientId} não existe`});
+            res.status(404).send({error: constantsConfig.CLIENTS.MESSAGES.ERROR.USER_NOT_EXISTS.replace('{USER_ID}', req.params.clientId)});
         }
     }
 
@@ -44,7 +45,7 @@ class ClientsMiddleware {
         if (!client) {
             next();
         } else {
-            res.status(409).send({error: `Usuário ${resourceID} já existe existe`});
+            res.status(409).send({error: constantsConfig.CLIENTS.MESSAGES.ERROR.USER_ALREADY_EXISTS.replace('{USER_ID}', String(resourceID))});
         }
     }
 
