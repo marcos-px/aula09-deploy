@@ -5,6 +5,7 @@ import updateClientUsecase from '../../../domain/usecases/clients/update.client.
 import deleteClientUsecase from '../../../domain/usecases/clients/delete.client.usecase';
 import listClientUsecase from '../../../domain/usecases/clients/list.client.usecase';
 import debug from 'debug';
+import clientsByCepClientUsecase from '../../../domain/usecases/clients/clientsByCep.client.usecase';
 
 const log: debug.IDebugger = debug('app:clients-controller');
 
@@ -47,6 +48,11 @@ class ClientsController {
         res.status(201).send({
             createdUsers: countUsers
         });
+    }
+
+    async clientsByCep(req: express.Request, res: express.Response){
+        const clients = await clientsByCepClientUsecase.execute(req.params.cep);
+        res.status(200).send(clients);
     }
 }
 

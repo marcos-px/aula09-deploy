@@ -6,4 +6,5 @@ export interface IClientsRepository {
     deleteById(resourceId: number): Promise<void>,
     list(): Promise<ClientEntity[]>,
     updateById(resource: ClientEntity): Promise<ClientEntity | undefined>
+    groupUsersByCep(cep: string): Promise<any>
 }
