@@ -2,6 +2,7 @@ import { CommonRoutesConfig } from "./common.routes.config";
 import ClientsController from "../controllers/clients.controller";
 import ClientsMiddleware from "../middlewares/clients.middleware";
 import express from "express";
+import authMiddleware from "../middlewares/auth.middleware";
 
 export class ClientsRoutes extends CommonRoutesConfig {
     constructor(app: express.Application) {
@@ -10,6 +11,7 @@ export class ClientsRoutes extends CommonRoutesConfig {
 
     configureRoutes(): express.Application {
         this.app.route(`/clients`)
+            .all(authMiddleware.checkAuth)
             .get(ClientsController.listClients)
             .post(
                 ClientsMiddleware.validateRequiredClientBodyFields,
@@ -18,6 +20,7 @@ export class ClientsRoutes extends CommonRoutesConfig {
             );
 
             this.app.route(`/clients/bulk`)
+            .all(authMiddleware.checkAuth)
                     .post(
                         ClientsMiddleware.uploadFile().single('file'),
                         ClientsMiddleware.parseXlsx,
@@ -25,10 +28,14 @@ export class ClientsRoutes extends CommonRoutesConfig {
                     )
 
             this.app.route(`/clients/cep/:cep`)
+            .all(authMiddleware.checkAuth)
                     .get(ClientsController.clientsByCep);
 
             this.app.route(`/clients/:clientId`)
-                        .all(ClientsMiddleware.validateClientExists)
+                        .all(
+                            authMiddleware.checkAuth,
+                            ClientsMiddleware.validateClientExists,
+                            )
                         .get(ClientsController.getClientById)
                         .put(
                             ClientsMiddleware.validateRequiredClientBodyFields,

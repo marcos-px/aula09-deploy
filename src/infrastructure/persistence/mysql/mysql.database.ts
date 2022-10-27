@@ -64,6 +64,16 @@ export class MysqlDatabase implements IDatabaseModel {
         }
     }
 
+    readByWhere(model: Sequelize.ModelCtor<Sequelize.Model<any, any>>, dataWhere: Sequelize.WhereOptions<any>): any {
+        try{
+            return model.findOne({
+                where: dataWhere
+            });
+        } catch(err){
+            throw new Error((err as Error).message);
+        }
+    }
+
     createModel(name: string, properties: Sequelize.ModelAttributes): Sequelize.ModelCtor<Sequelize.Model<any, any>> {
         return this._adapter.define(
             name,
