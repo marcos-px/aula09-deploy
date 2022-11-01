@@ -2,11 +2,18 @@ import { AccountEntity } from "../../entities/accounts/account.entity";
 import { IAccountsRepository } from "../../repositories/accounts.repository.interface";
 import accountsRepository from "../../../adapters/repositories/accounts.repository";
 import { IUseCase } from "../usecase.interface";
+import { IWithdrawEntity } from "../../entities/transactions/withdraw.entity";
+import { TransactionStatus } from "../../entities/transactions/transactionstatus.entity";
+import { TransactionType } from "../../entities/transactions/transactiontype.entity";
+import { ITransactionsRepository } from "../../repositories/transactions.repository.interface";
+import transactionsRepository from "../../../adapters/repositories/transactions.repository";
 
 class WithdrawAccountUseCase implements IUseCase {
 
-    constructor(private _repository: IAccountsRepository) {
-
+    constructor(
+        private _repositoryAccounts: IAccountsRepository,
+        private _repositoryTransactions: ITransactionsRepository
+        ) {
     }
 
     async execute(data: { accountId: number, value: number }): Promise<AccountEntity | undefined> {
@@ -28,10 +35,21 @@ class WithdrawAccountUseCase implements IUseCase {
          * Aqui teria algum comando para envio do dinheiro para o cliente em um ambiente real.
          */
 
+         const transaction: IWithdrawEntity = {
+            date: new Date(),
+            value: data.value,
+            status: TransactionStatus.Completed,
+            accountSourceId: account.indexId!,
+            accountSource: account,
+            type: TransactionType.Withdraw
+        };
+        this._repositoryTransactions.create(transaction);
+
         return accountsRepository.updateById(account);
     }
 }
 
 export default new WithdrawAccountUseCase(
-    accountsRepository
+    accountsRepository,
+    transactionsRepository
 );

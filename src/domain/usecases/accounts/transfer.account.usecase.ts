@@ -4,17 +4,25 @@ import accountsRepository from "../../../adapters/repositories/accounts.reposito
 import { IUseCase } from "../usecase.interface";
 import withdrawAccountUseCase from "./withdraw.account.usecase";
 import depositAccountUseCase from "./deposit.account.usecase";
+import transactionsRepository from "../../../adapters/repositories/transactions.repository";
+import { ITransactionsRepository } from "../../repositories/transactions.repository.interface";
+import { ITransferEntity } from "../../entities/transactions/transfer.entity";
+import { TransactionStatus } from "../../entities/transactions/transactionstatus.entity";
+import { TransactionType } from "../../entities/transactions/transactiontype.entity";
 
 class TransferAccountUseCase implements IUseCase {
 
-    constructor(private _repository: IAccountsRepository) {
-
+    constructor(
+        private _repositoryAccounts: IAccountsRepository,
+        private _repositoryTransactions: ITransactionsRepository
+        ) {
     }
 
     async execute(data: { sourceAccountId: number, value: number, targetAccountId: number }): Promise<AccountEntity | undefined> {
         let sourceAccount: AccountEntity | undefined;
+        let targetAccount: AccountEntity | undefined;
         try{
-            const targetAccount = await accountsRepository.readById(data.targetAccountId);
+            targetAccount = await accountsRepository.readById(data.targetAccountId);
             if(!targetAccount){
                 throw new Error('Não foi possível encontrar os recursos na conta destino.');
             }
@@ -38,6 +46,17 @@ class TransferAccountUseCase implements IUseCase {
                 throw new Error(`Valor acima do limite de transferência diário: ${sourceAccount.transferLimit}.`);
             }
 
+            const transaction: ITransferEntity = {
+                date: new Date(),
+                value: data.value,
+                status: TransactionStatus.Completed,
+                accountSourceId: sourceAccount.indexId!,
+                accountSource: sourceAccount,
+                targetSource: targetAccount,
+                type: TransactionType.Transfer
+            };
+            this._repositoryTransactions.create(transaction);
+
             return await depositAccountUseCase.execute({
                 accountId: data.targetAccountId, 
                 value: data.value
@@ -53,5 +72,6 @@ class TransferAccountUseCase implements IUseCase {
 }
 
 export default new TransferAccountUseCase(
-    accountsRepository
+    accountsRepository,
+    transactionsRepository
 );
