@@ -18,7 +18,7 @@ export class MongoDatabase implements IDatabase {
         this._port = Number(mongoConfig.port);
 
         //mongodb://user:password@localhost:27017/test
-        mongoose.connect(`mongodb://${this._username}:${this._password}@${this._host}:${this._port}/${this._db}?authSource=admin`);
+        // mongoose.connect(`mongodb://${this._username}:${this._password}@${this._host}:${this._port}/${this._db}?authSource=admin`);
         // mongoose.connect(`mongodb://${this._host}:${this._port}/${this._db}`);
     }
 
