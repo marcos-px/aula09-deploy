@@ -35,15 +35,15 @@ class WithdrawAccountUseCase implements IUseCase {
          * Aqui teria algum comando para envio do dinheiro para o cliente em um ambiente real.
          */
 
-         const transaction: IWithdrawEntity = {
-            date: new Date(),
-            value: data.value,
-            status: TransactionStatus.Completed,
-            accountSourceId: account.indexId!,
-            accountSource: account,
-            type: TransactionType.Withdraw
-        };
-        this._repositoryTransactions.create(transaction);
+        //  const transaction: IWithdrawEntity = {
+        //     date: new Date(),
+        //     value: data.value,
+        //     status: TransactionStatus.Completed,
+        //     accountSourceId: account.indexId!,
+        //     accountSource: account,
+        //     type: TransactionType.Withdraw
+        // };
+        // this._repositoryTransactions.create(transaction);
 
         return accountsRepository.updateById(account);
     }

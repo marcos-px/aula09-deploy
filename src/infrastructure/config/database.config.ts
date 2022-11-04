@@ -9,6 +9,20 @@ const databaseConfig = {
     dialect: 'mysql'
 }
 
+if(process.env.NODE_ENV === 'production'){
+    Object.assign(
+        databaseConfig,
+        {
+            dialectOptions: {
+                ssl: {
+                    require: true,
+                    rejectUnauthorized: false
+                }
+            }
+        }
+    )
+}
+
 export default databaseConfig;
 
 module.exports = databaseConfig;
