@@ -46,16 +46,16 @@ class TransferAccountUseCase implements IUseCase {
                 throw new Error(`Valor acima do limite de transferência diário: ${sourceAccount.transferLimit}.`);
             }
 
-            const transaction: ITransferEntity = {
-                date: new Date(),
-                value: data.value,
-                status: TransactionStatus.Completed,
-                accountSourceId: sourceAccount.indexId!,
-                accountSource: sourceAccount,
-                targetSource: targetAccount,
-                type: TransactionType.Transfer
-            };
-            this._repositoryTransactions.create(transaction);
+            // const transaction: ITransferEntity = {
+            //     date: new Date(),
+            //     value: data.value,
+            //     status: TransactionStatus.Completed,
+            //     accountSourceId: sourceAccount.indexId!,
+            //     accountSource: sourceAccount,
+            //     targetSource: targetAccount,
+            //     type: TransactionType.Transfer
+            // };
+            // this._repositoryTransactions.create(transaction);
 
             return await depositAccountUseCase.execute({
                 accountId: data.targetAccountId, 
