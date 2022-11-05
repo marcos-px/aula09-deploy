@@ -43,7 +43,7 @@ routes.push(new AccountsRoutes(app));
 routes.push(new AuthRoutes(app));
 // routes.push(new TransactionsRoutes(app));
 
-const runningMessage = `Servidor rodando na porta ${port}, legal?`;
+const runningMessage = `Servidor rodando na porta ${port}, legal :-)?`;
 app.get('/', (req: express.Request, res: express.Response) => {
     res.status(200).send(runningMessage);
 })
